@@ -5,15 +5,17 @@
 using namespace sf;
 using namespace std;
 
-Engine::Engine() : window(VideoMode(GRID_WIDTH * TILE_SIZE, GRID_HEIGHT * TILE_SIZE), "Tetris") {
+Engine::Engine() : window(VideoMode(2 * TILE_SIZE * GRID_WIDTH * RESIZE, TILE_SIZE * GRID_HEIGHT * RESIZE), "Tetris") {
     Grid();
     spawnTetr();
+    gameClock.restart();
 }
 
 void Engine::Grid(){
-    for (auto & y : grid){
-        for (int & x : y){
-            x = 0;
+    for (int y = 0; y < GRID_HEIGHT; y++){
+        for (int x = 0; x < GRID_WIDTH; x++){
+            grid[y][x] = 0;
+            gridColor[y][x] = Color::Black;
         }
     }
 }
@@ -62,7 +64,9 @@ void Engine::spawnTetr() {
 }
 
 void Engine::run(){
+    window.setView(View(FloatRect(0, 0, 2 * TILE_SIZE * GRID_WIDTH, TILE_SIZE * GRID_HEIGHT)));
     while(window.isOpen()){
+        float dT = gameClock.restart().asSeconds();
         Event event;
         while(window.pollEvent(event)){
             if(event.type == Event::Closed){
@@ -74,7 +78,7 @@ void Engine::run(){
                 }
             }
         }
-        update();
+        update(dT);
         render();
         sleep(sf::milliseconds(10));
     }
@@ -86,7 +90,7 @@ void Engine::render(){
         for (int x = 0; x < GRID_WIDTH; ++x) {
             RectangleShape cell(Vector2f(TILE_SIZE - 1, TILE_SIZE -1));
             cell.setPosition(x * TILE_SIZE, y * TILE_SIZE);
-            cell.setFillColor(grid[y][x] == 0 ? Color::Black : Color::White);
+            cell.setFillColor(grid[y][x] == 0 ? Color::Black : gridColor[y][x]);
             window.draw(cell);
         }
     }
@@ -96,28 +100,59 @@ void Engine::render(){
         cell.setFillColor(currentTetromino.color);
         window.draw(cell);
     }
-    window.setFramerateLimit(15);
     window.display();
 }
 
-void Engine::update(){
-    if(Keyboard::isKeyPressed(sf::Keyboard::Left)){
-        bool canMove = true;
+void Engine::update(float dT){
+    horizontalAccumulator += dT;
+    float moveDelay = 0.09f;
+    static float time = 0.0f;
+    time += dT;
+    float veloY = 1.0f;
+    if(time >= 0.5f / veloY){
+        bool goDown = true;
         for(const auto& block : currentTetromino.blocks){
+            int newY = block.y + 1;
+            if(newY >= GRID_HEIGHT || grid[newY][block.x] != 0){
+                goDown = false;
+                break;
+            }
+        }
+        if(goDown) {
+            for (auto& block : currentTetromino.blocks){
+                block.y++;
+            }
+        } else {
+            for (const auto& block : currentTetromino.blocks){
+                grid[block.y][block.x] = 1;
+                gridColor[block.y][block.x] = currentTetromino.color;
+            }
+            spawnTetr();
+        }
+
+        time = 0.0f;
+    }
+
+    if (Keyboard::isKeyPressed(sf::Keyboard::Left) && horizontalAccumulator >= moveDelay) {
+        bool canMove = true;
+
+        for (const auto& block : currentTetromino.blocks) {
             int newX = block.x - 1;
-            if(newX < 0 || grid[block.y][newX] != 0){
+            if (newX < 0 || grid[block.y][newX] != 0) {
                 canMove = false;
                 break;
             }
         }
-        if(canMove) {
-            for (auto& block : currentTetromino.blocks){
-                block.x -= 1;
+        if (canMove) {
+            for (auto& block : currentTetromino.blocks) {
+                block.x -= 1; // Move left by one full grid unit
             }
         }
+        horizontalAccumulator = 0.0f; // Reset the accumulator
     }
-    if(Keyboard::isKeyPressed(Keyboard::Right)){
+    if (Keyboard::isKeyPressed(Keyboard::Right) && horizontalAccumulator >= moveDelay) {
         bool canMove = true;
+
         for (const auto& block : currentTetromino.blocks) {
             int newX = block.x + 1;
             if (newX >= GRID_WIDTH || grid[block.y][newX] != 0) {
@@ -127,8 +162,28 @@ void Engine::update(){
         }
         if (canMove) {
             for (auto& block : currentTetromino.blocks) {
-                block.x += 1;
+                block.x += 1; // Move right by one full grid unit
             }
         }
+        horizontalAccumulator = 0.0f; // Reset the accumulator
+    }
+    float downDelay = 0.1f;
+    downAccumulator += dT;
+    if(Keyboard::isKeyPressed(Keyboard::Down) && downAccumulator >= downDelay) {
+        bool canMove = true;
+        for (const auto& block: currentTetromino.blocks) {
+            int newY = block.y + 1;
+            if (newY >= GRID_HEIGHT || grid[newY][block.x] != 0){
+                canMove = false;
+                break;
+            }
+        }
+        if(canMove){
+            for(auto& block : currentTetromino.blocks){
+                block.y++;
+            }
+        }
+        downAccumulator = 0.0f;
     }
 }
+
