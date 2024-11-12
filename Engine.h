@@ -5,37 +5,39 @@
 #ifndef M4OEP_ENGINE_H
 #define M4OEP_ENGINE_H
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
 #include <vector>
+#include "Tetromino.h"
+#include "Constants.h"
 using namespace sf;
 
-const int GRID_WIDTH = 10;
-const int GRID_HEIGHT = 20;
-const int TILE_SIZE = 8;
-const int RESIZE = 4;
-
-struct Tetromino {
-    std::vector<Vector2i> blocks;
-    Color color;
-};
 
 class Engine {
 public:
     Engine();
     void run();
+    void clearRows();
+    void printGrid();
+
 private:
     Clock gameClock;
-    float velocityX = 5.0f;
     float horizontalAccumulator = 0.0f;
     float downAccumulator = 0.0f;
+    int rotationState = 0;
     RenderWindow window;
-    int grid[GRID_HEIGHT][GRID_WIDTH];
-    Color gridColor[GRID_HEIGHT][GRID_WIDTH];
-    Tetromino currentTetromino;
-    void spawnTetr();
     void Grid();
+    int grid[GRID_HEIGHT][GRID_WIDTH];
+    Color gridColor[GRID_HEIGHT][GRID_WIDTH];TetrominoData currentTetromino;
+    Tetromino Tetro;
     void update(float deltaTime);
     void render();
 };
+
+
+
+
+
 
 
 #endif //M4OEP_ENGINE_H

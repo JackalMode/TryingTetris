@@ -10,6 +10,9 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 add_executable(M4OEP main.cpp
         Engine.cpp
-        player.cpp
+        Tetromino.cpp
+        Constants.h
+        Rotation.h
+        Rotation.cpp
 )
 target_link_libraries(M4OEP sfml-graphics sfml-window sfml-system)

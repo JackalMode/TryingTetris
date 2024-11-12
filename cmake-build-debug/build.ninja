@@ -63,8 +63,15 @@ build CMakeFiles/M4OEP.dir/Engine.cpp.obj: CXX_COMPILER__M4OEP_unscanned_Debug C
   OBJECT_DIR = CMakeFiles\M4OEP.dir
   OBJECT_FILE_DIR = CMakeFiles\M4OEP.dir
 
-build CMakeFiles/M4OEP.dir/player.cpp.obj: CXX_COMPILER__M4OEP_unscanned_Debug C$:/Users/Mitchell$ Steenbergen/CLionProjects/M4OEP-msteenbe/player.cpp || cmake_object_order_depends_target_M4OEP
-  DEP_FILE = CMakeFiles\M4OEP.dir\player.cpp.obj.d
+build CMakeFiles/M4OEP.dir/Tetromino.cpp.obj: CXX_COMPILER__M4OEP_unscanned_Debug C$:/Users/Mitchell$ Steenbergen/CLionProjects/M4OEP-msteenbe/Tetromino.cpp || cmake_object_order_depends_target_M4OEP
+  DEP_FILE = CMakeFiles\M4OEP.dir\Tetromino.cpp.obj.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -isystem "C:/Users/Mitchell Steenbergen/SFML-2.6.1/include"
+  OBJECT_DIR = CMakeFiles\M4OEP.dir
+  OBJECT_FILE_DIR = CMakeFiles\M4OEP.dir
+
+build CMakeFiles/M4OEP.dir/Rotation.cpp.obj: CXX_COMPILER__M4OEP_unscanned_Debug C$:/Users/Mitchell$ Steenbergen/CLionProjects/M4OEP-msteenbe/Rotation.cpp || cmake_object_order_depends_target_M4OEP
+  DEP_FILE = CMakeFiles\M4OEP.dir\Rotation.cpp.obj.d
   FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -isystem "C:/Users/Mitchell Steenbergen/SFML-2.6.1/include"
   OBJECT_DIR = CMakeFiles\M4OEP.dir
@@ -78,7 +85,7 @@ build CMakeFiles/M4OEP.dir/player.cpp.obj: CXX_COMPILER__M4OEP_unscanned_Debug C
 #############################################
 # Link the executable M4OEP.exe
 
-build M4OEP.exe: CXX_EXECUTABLE_LINKER__M4OEP_Debug CMakeFiles/M4OEP.dir/main.cpp.obj CMakeFiles/M4OEP.dir/Engine.cpp.obj CMakeFiles/M4OEP.dir/player.cpp.obj | C$:/Users/Mitchell$ Steenbergen/SFML-2.6.1/lib/libsfml-graphics-d.a C$:/Users/Mitchell$ Steenbergen/SFML-2.6.1/lib/libsfml-window-d.a C$:/Users/Mitchell$ Steenbergen/SFML-2.6.1/lib/libsfml-system-d.a
+build M4OEP.exe: CXX_EXECUTABLE_LINKER__M4OEP_Debug CMakeFiles/M4OEP.dir/main.cpp.obj CMakeFiles/M4OEP.dir/Engine.cpp.obj CMakeFiles/M4OEP.dir/Tetromino.cpp.obj CMakeFiles/M4OEP.dir/Rotation.cpp.obj | C$:/Users/Mitchell$ Steenbergen/SFML-2.6.1/lib/libsfml-graphics-d.a C$:/Users/Mitchell$ Steenbergen/SFML-2.6.1/lib/libsfml-window-d.a C$:/Users/Mitchell$ Steenbergen/SFML-2.6.1/lib/libsfml-system-d.a
   FLAGS = -g
   LINK_LIBRARIES = "C:/Users/Mitchell Steenbergen/SFML-2.6.1/lib/libsfml-graphics-d.a"  "C:/Users/Mitchell Steenbergen/SFML-2.6.1/lib/libsfml-window-d.a"  "C:/Users/Mitchell Steenbergen/SFML-2.6.1/lib/libsfml-system-d.a"  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\M4OEP.dir
