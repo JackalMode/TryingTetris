@@ -15,22 +15,33 @@ using namespace sf;
 
 class Engine {
 public:
+    // Constructs an Engine object
     Engine();
+    // Main game loop
     void run();
+    // Clears full rows from the grid
     void clearRows();
+    // Prints the current state of the grid to the console
     void printGrid();
 
 private:
+    // Game clock for tracking time between updates
     Clock gameClock;
-    float horizontalAccumulator = 0.0f;
-    float downAccumulator = 0.0f;
-    int rotationState = 0;
+    // Game window to display the game
     RenderWindow window;
-    void Grid();
+    // The game grid representing the current state of the blocks
     int grid[GRID_HEIGHT][GRID_WIDTH];
-    Color gridColor[GRID_HEIGHT][GRID_WIDTH];TetrominoData currentTetromino;
+    // Color representation of each position in the gird
+    Color gridColor[GRID_HEIGHT][GRID_WIDTH];
+    // Data for the current tetromino being manipulated
+    TetrominoData currentTetromino;
+    // Tetromino object used for managing tetrmonio operations
     Tetromino Tetro;
+    // Initializes the game grid
+    void Grid();
+    // Updates the game state
     void update(float deltaTime);
+    // Renders the current state of the game
     void render();
 };
 
