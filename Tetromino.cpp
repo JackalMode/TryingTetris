@@ -221,7 +221,7 @@ void Tetromino::moveRight(float deltaTime, TetrominoData &currentTetromino, int 
     }
 }
 /**
- * Resets the game grid and spaces a new tetromino
+ * Resets the game grid and spaces a new tetromino.
  * @param grid
  * @param currentTetromino
  */

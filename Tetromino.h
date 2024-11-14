@@ -19,7 +19,7 @@ enum TetrominoType {
     J_SHAPE
 };
 
-// Struct to hold data about tetromino, including, block position, color, type, and state
+// Struct to hold data about tetromino, including, block position, color, type, and state.
 struct TetrominoData {
     std::vector<sf::Vector2i> blocks;
     sf::Color color;

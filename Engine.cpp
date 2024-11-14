@@ -153,7 +153,7 @@ void Engine::printGrid() {
     std::cout << "Current Grid State:" << std::endl;
     for (int y = 0; y < GRID_HEIGHT; ++y) {
         for (int x = 0; x < GRID_WIDTH; ++x) {
-            // Print each cell in the row
+            // Print each cell in the row.
             std::cout << grid[y][x] << " ";
         }
         std::cout << std::endl;

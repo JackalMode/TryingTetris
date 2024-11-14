@@ -25,7 +25,7 @@ public:
     void printGrid();
 
 private:
-    // Game clock for tracking time between updates
+    // Game clock for tracking time between updates.
     Clock gameClock;
     // Game window to display the game
     RenderWindow window;
