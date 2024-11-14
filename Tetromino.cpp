@@ -122,7 +122,6 @@ void Tetromino::falling(float dT, TetrominoData &currentTetromino, int grid[][GR
                 gridColor[block.y][block.x] = currentTetromino.color;
             }
             currentTetromino.isFalling = false;
-            engine.printGrid();
 
         }
 
