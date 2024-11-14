@@ -12,7 +12,7 @@
 
 class Rotation {
 public:
-    // Rotates the given tetromino based on the specific rotation state and type
+    // Rotates the given tetromino based on the specific rotation state and type.
     static void rotate(TetrominoData &currentTetromino, int grid[][GRID_WIDTH], int &rotationState, TetrominoType type);
 };
 

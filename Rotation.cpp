@@ -23,7 +23,7 @@ void Rotation::rotate(TetrominoData &currentTetromino, int (*grid)[10], int &rot
     if(Keyboard::isKeyPressed(Keyboard::Up) && !wasUpPressed){
         wasUpPressed = true;
         bool canRotate = true;
-        // Stores the new positions after rotation
+        // Stores the new positions after rotation.
         std::vector<Vector2i> newPosition(4);
         // Sets the pivot block for some
         Vector2i pivot = currentTetromino.blocks[1];
