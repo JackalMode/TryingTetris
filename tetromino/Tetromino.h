@@ -3,7 +3,7 @@
 //
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Constants.h"
+#include "../util/Constants.h"
 
 #ifndef M4OEP_TETROMINO_H
 #define M4OEP_TETROMINO_H
@@ -30,7 +30,7 @@ struct TetrominoData {
 class Tetromino{
 public:
     //Spawns a new tetromino at the top of the game grid
-    void spawnTetr(TetrominoData &currentTetromino, int grid[][GRID_WIDTH]);
+    bool spawnTetr(TetrominoData &currentTetromino, int grid[][GRID_WIDTH]);
     // Handles the constant downward movement  of the tetromino, including collision checking
     void falling(float deltaTime, TetrominoData &currentTetromino, int grid[][GRID_WIDTH], sf::Color gridColor[][GRID_WIDTH]);
     // Moves the tetromino to the left, checks for collisions and boundaries

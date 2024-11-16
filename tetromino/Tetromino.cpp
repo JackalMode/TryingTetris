@@ -3,21 +3,20 @@
 //
 #include <SFML/Graphics.hpp>
 #include "Tetromino.h"
-#include "Engine.h"
-#include "Rotation.h"
+#include "../util/Engine.h"
+#include "../rotation/Rotation.h"
 #include <cstdlib>
 
 
 
 using namespace sf;
 using namespace std;
-Engine engine;
 /**
  * Spaws a new tetromino shapes on the game grid
  * @param currentTetromino
  * @param grid
  */
-void Tetromino::spawnTetr(TetrominoData &currentTetromino, int grid[][GRID_WIDTH]) {
+bool Tetromino::spawnTetr(TetrominoData &currentTetromino, int grid[][GRID_WIDTH]) {
     int randomShape = rand() % 7;
 
     switch(randomShape){
@@ -79,8 +78,9 @@ void Tetromino::spawnTetr(TetrominoData &currentTetromino, int grid[][GRID_WIDTH
     }
     // If there is no space, reset the game
     if(!canPlace) {
-        resetGame(grid, currentTetromino);
+        return false;
     }
+    return true;
 }
 
 /**

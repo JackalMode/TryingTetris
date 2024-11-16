@@ -7,8 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Tetromino.h"
-#include "Constants.h"
+#include "../tetromino/Tetromino.h"
+#include "../util/Constants.h"
 
 class Rotation {
 public:
