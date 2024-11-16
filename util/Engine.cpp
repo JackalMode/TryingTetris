@@ -1,14 +1,23 @@
 #include <SFML/Graphics.hpp>
 #include "Engine.h"
-#include "Tetromino.h"
+#include "../tetromino/Tetromino.h"
+#include "../Screens/Screens.h"
 #include <iostream>
+
+enum GameState { START, PLAY, PAUSE, GAME_OVER};
+GameState currentGameState = START;
+
 using namespace sf;
 using namespace std;
 
 /*
  * Constructs the Engine object and initializes the game window
- */
+*/
 Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE, TILE_SIZE * GRID_HEIGHT * RESIZE), "Tetris") {
+    // Load the font
+    if(!font.loadFromFile("C:/Users/Mitchell Steenbergen/CLionProjects/M4OEP-msteenbe/Font/Courier Regular.ttf")){
+        std::cout << "Error loading font" << endl;
+    }
     // Initialize the grid with default values
     Grid();
     // Spawn the first tetromino
@@ -34,30 +43,68 @@ void Engine::Grid(){
  * Runs the main game loop
  */
 void Engine::run(){
-    // Set the initial view of the window to math the grid dimensions
-    window.setView(View(FloatRect(0, 0, TILE_SIZE * GRID_WIDTH, TILE_SIZE * GRID_HEIGHT)));
-    while(window.isOpen()){
+    Screens screens;
+    while (window.isOpen()) {
+        Event event;
         // Calculate Delta Time
         float dT = gameClock.restart().asSeconds();
-        Event event;
-        // Poll for evens such as closing the window or pressing keys
-        while(window.pollEvent(event)){
-            // Closes window if the close even it triggered
-            if(event.type == Event::Closed){
+        // Poll for events such as closing the window or pressing keys
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed) {
                 window.close();
             }
-            // Close the window if the escape key is pressed
-            if(event.type == Event::KeyPressed){
-                if(event.key.code == Keyboard::Escape) {
+            // Handle events based on the current game state
+            if(currentGameState == START){
+                if(event.type == Event::KeyPressed && event.key.code == Keyboard::P){
+                    currentGameState = PLAY;
+                } else if (event.key.code == Keyboard::Escape){
                     window.close();
+                }
+            } else if (currentGameState == PLAY) {
+                if (event.type == Event::KeyPressed && event.key.code == Keyboard::P) {
+                    currentGameState = PAUSE;
+                } else if (event.key.code == Keyboard::Escape) {
+                    window.close();
+                }
+            } else if (currentGameState == PAUSE) {
+                if (event.type == Event::KeyPressed && event.key.code == Keyboard::P) {
+                    currentGameState = PLAY;
+                } else if (event.key.code == Keyboard::Escape) {
+                    window.close();
+                }
+            } else if (currentGameState == GAME_OVER){
+                if(event.type == Event::KeyPressed){
+                    if(event.key.code == Keyboard::Escape){
+                        window.close();
+                    } else if (event.key.code == Keyboard::R){
+                        Tetro.resetGame(grid, currentTetromino);
+                        currentGameState = PLAY;
+                    } else if (event.key.code == Keyboard::M){
+                        Tetro.resetGame(grid, currentTetromino);
+                        currentGameState = START;
+                    }
                 }
             }
         }
-        // Update the game based on elapsed time
-        update(dT);
-        // Render the current state of the game
-        render();
-        // Add a slight delay to the control game speed
+
+        // Clear the window with black color
+        window.clear(Color::Black);
+
+        // Render the appropriate screen based on the current game state
+        if(currentGameState == START) {
+            screens.startScreen(window, font);
+        } else if (currentGameState == PAUSE){
+            screens.pauseScreen(window, font);
+        } else if (currentGameState == PLAY){
+            // Set the initial view of the window to math the grid dimensions
+            window.setView(View(FloatRect(0, 0, TILE_SIZE * GRID_WIDTH, TILE_SIZE * GRID_HEIGHT)));
+            update(dT);
+            render();
+        } else if (currentGameState == GAME_OVER){
+            screens.gamerOverScreen(window, font);
+        }
+
+        // Add a slight delay to control the game speed
         sleep(sf::milliseconds(10));
     }
 }
@@ -79,6 +126,7 @@ void Engine::render(){
             window.draw(cell);
         }
     }
+
     // Render the current Tetromino blocks
     for(const auto& block : currentTetromino.blocks){
         // Define a tetromino block with adjusted size
@@ -90,15 +138,16 @@ void Engine::render(){
         // Draw the block to the window
         window.draw(cell);
     }
+
     // Display everything rendered on the screen
     window.display();
 }
 /**
  * Updates the game state
- * @param dT
+ * @param dTa
  */
 void Engine::update(float dT){
-    // Hnadles the falling movement of the tetromino (add the other movement)
+    // Handles the falling movement of the tetromino (add the other movement)
     Tetro.falling(dT, currentTetromino, grid, gridColor);
     // Check if the current tetromino has stopped falling
     if (!currentTetromino.isFalling) {
@@ -107,7 +156,11 @@ void Engine::update(float dT){
         // Clear any full rows
         clearRows();
         // Spawn a new tetromino
-        Tetro.spawnTetr(currentTetromino, grid);
+        if(!Tetro.spawnTetr(currentTetromino, grid)){
+            currentGameState = GAME_OVER;
+            cout << "Game Over" << endl;
+        }
+
     }
 
 }
@@ -159,3 +212,5 @@ void Engine::printGrid() {
         std::cout << std::endl;
     }
 }
+
+

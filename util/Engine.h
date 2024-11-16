@@ -8,8 +8,9 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <vector>
-#include "Tetromino.h"
+#include "../tetromino/Tetromino.h"
 #include "Constants.h"
+
 using namespace sf;
 
 
@@ -25,6 +26,7 @@ public:
     void printGrid();
 
 private:
+    Font font;
     // Game clock for tracking time between updates.
     Clock gameClock;
     // Game window to display the game
