@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Mitchell Steenbergen/CLionProjects/M4OEP-msteenbe/cmake-build-debug",
-		"source" : "C:/Users/Mitchell Steenbergen/CLionProjects/M4OEP-msteenbe"
+		"build" : "C:/Users/Mitchell Steenbergen/CLionProjects/Tetris/cmake-build-debug",
+		"source" : "C:/Users/Mitchell Steenbergen/CLionProjects/Tetris"
 	},
 	"version" : 
 	{

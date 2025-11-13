@@ -12,11 +12,10 @@
 using namespace sf;
 using namespace std;
 /**
- * Spaws a new tetromino shapes on the game grid
+ * Spaws a new tetromino shape
  * @param currentTetromino
- * @param grid
  */
-bool Tetromino::spawnTetr(TetrominoData &currentTetromino, int grid[][GRID_WIDTH]) {
+void Tetromino::spawnTetr(TetrominoData &currentTetromino) {
     int randomShape = rand() % 7;
 
     switch(randomShape){
@@ -68,19 +67,6 @@ bool Tetromino::spawnTetr(TetrominoData &currentTetromino, int grid[][GRID_WIDTH
     currentTetromino.isFalling = true;
     // Resets the rotation state
     currentTetromino.rotationState = 0;
-    bool canPlace = true;
-    // Check if there is space to place the tetromino on the grid
-    for (const auto& block : currentTetromino.blocks){
-        if(grid[block.y][block.x] != 0) {
-            canPlace = false;
-            break;
-        }
-    }
-    // If there is no space, reset the game
-    if(!canPlace) {
-        return false;
-    }
-    return true;
 }
 
 /**
@@ -233,6 +219,6 @@ void Tetromino::resetGame(int grid[][GRID_WIDTH], TetrominoData &currentTetromin
     }
 
     // Spawn a new tetromino
-    spawnTetr(currentTetromino, grid);
+    spawnTetr(currentTetromino);
 }
 

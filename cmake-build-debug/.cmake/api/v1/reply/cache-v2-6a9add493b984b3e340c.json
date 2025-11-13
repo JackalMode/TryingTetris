@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/Mitchell Steenbergen/CLionProjects/M4OEP-msteenbe/cmake-build-debug"
+			"value" : "c:/Users/Mitchell Steenbergen/CLionProjects/Tetris/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Mitchell Steenbergen/CLionProjects/M4OEP-msteenbe/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/Mitchell Steenbergen/CLionProjects/Tetris/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -647,7 +647,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/Mitchell Steenbergen/CLionProjects/M4OEP-msteenbe"
+			"value" : "C:/Users/Mitchell Steenbergen/CLionProjects/Tetris"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1279,7 +1279,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Mitchell Steenbergen/CLionProjects/M4OEP-msteenbe/cmake-build-debug"
+			"value" : "C:/Users/Mitchell Steenbergen/CLionProjects/Tetris/cmake-build-debug"
 		},
 		{
 			"name" : "M4OEP_IS_TOP_LEVEL",
@@ -1303,7 +1303,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Mitchell Steenbergen/CLionProjects/M4OEP-msteenbe"
+			"value" : "C:/Users/Mitchell Steenbergen/CLionProjects/Tetris"
 		},
 		{
 			"name" : "SFML_DIR",

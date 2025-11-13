@@ -30,7 +30,7 @@ struct TetrominoData {
 class Tetromino{
 public:
     //Spawns a new tetromino at the top of the game grid
-    bool spawnTetr(TetrominoData &currentTetromino, int grid[][GRID_WIDTH]);
+    void spawnTetr(TetrominoData &currentTetromino);
     // Handles the constant downward movement  of the tetromino, including collision checking
     void falling(float deltaTime, TetrominoData &currentTetromino, int grid[][GRID_WIDTH], sf::Color gridColor[][GRID_WIDTH]);
     // Moves the tetromino to the left, checks for collisions and boundaries

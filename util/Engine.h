@@ -39,12 +39,22 @@ private:
     TetrominoData currentTetromino;
     // Tetromino object used for managing tetrmonio operations
     Tetromino Tetro;
+    // Checks if you can place the Tetromino
+    bool canPlace(const TetrominoData& tetro) const;
     // Initializes the game grid
     void Grid();
     // Updates the game state
     void update(float deltaTime);
     // Renders the current state of the game
     void render();
+    // Game view
+    View gameView;
+    // Hud View
+    View hudView;
+    // Upcoming piece (not falling yet)
+    TetrominoData nextTetromino;
+    // Hud helping hand thingy
+    void drawNextPreviewHUD();
 };
 
 
