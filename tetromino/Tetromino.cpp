@@ -77,14 +77,15 @@ void Tetromino::spawnTetr(TetrominoData &currentTetromino) {
  * @param grid
  * @param gridColor
  */
-void Tetromino::falling(float dT, TetrominoData &currentTetromino, int grid[][GRID_WIDTH], sf::Color gridColor[][GRID_WIDTH]) {
+int Tetromino::falling(float dT, TetrominoData &currentTetromino, int grid[][GRID_WIDTH], sf::Color gridColor[][GRID_WIDTH], float velo) {
     if (!currentTetromino.isFalling) {
-        return; // Do nothing if the current tetromino is not falling
+        return 0; // Do nothing if the current tetromino is not falling
     }
+    int pressed = 0;
     horizontalAccumulator += dT;
     static float time = 0.0f;
     time += dT;
-    float veloY = 1.0f;
+    float veloY = velo;
     // Move the tetromino down after a certain delay
     if(time >= 0.5f / veloY){
         bool goDown = true;
@@ -116,8 +117,12 @@ void Tetromino::falling(float dT, TetrominoData &currentTetromino, int grid[][GR
     // Call movement functions
     moveLeft(dT, currentTetromino, grid);
     moveRight(dT, currentTetromino, grid);
-    moveDown(dT, currentTetromino, grid);
+    if (moveDown(dT, currentTetromino, grid)){
+        pressed += 1;
+    }
+
     Rotation::rotate(currentTetromino, grid, currentTetromino.rotationState, currentTetromino.type);
+    return pressed;
 }
 /**
  * Moves the tetromino to the left
@@ -154,7 +159,7 @@ void Tetromino::moveLeft(float deltaTime, TetrominoData &currentTetromino, int g
  * @param currentTetromino
  * @param grid
  */
-void Tetromino::moveDown(float deltaTime, TetrominoData &currentTetromino, int grid[][GRID_WIDTH]) {
+bool Tetromino::moveDown(float deltaTime, TetrominoData &currentTetromino, int grid[][GRID_WIDTH]) {
     downAccumulator += deltaTime;
     if(Keyboard::isKeyPressed(Keyboard::Down) && downAccumulator >= downDelay) {
         bool canMove = true;
@@ -171,10 +176,14 @@ void Tetromino::moveDown(float deltaTime, TetrominoData &currentTetromino, int g
             for(auto& block : currentTetromino.blocks){
                 block.y++;
             }
+            downAccumulator = 0.0f;
+            return true;
         }
         // Reset the down movement accumulator
         downAccumulator = 0.0f;
     }
+    return false;
+
 }
 /**
  * Moves the tetromino to the right

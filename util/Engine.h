@@ -55,6 +55,10 @@ private:
     TetrominoData nextTetromino;
     // Hud helping hand thingy
     void drawNextPreviewHUD();
+    // Score
+    int score;
+    // Score Text
+    Text scoreText;
 };
 
 

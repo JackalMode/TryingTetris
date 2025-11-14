@@ -32,13 +32,13 @@ public:
     //Spawns a new tetromino at the top of the game grid
     void spawnTetr(TetrominoData &currentTetromino);
     // Handles the constant downward movement  of the tetromino, including collision checking
-    void falling(float deltaTime, TetrominoData &currentTetromino, int grid[][GRID_WIDTH], sf::Color gridColor[][GRID_WIDTH]);
+    int falling(float deltaTime, TetrominoData &currentTetromino, int grid[][GRID_WIDTH], sf::Color gridColor[][GRID_WIDTH], float velo);
     // Moves the tetromino to the left, checks for collisions and boundaries
     void moveLeft(float deltaTime, TetrominoData &currentTetromino, int grid[][GRID_WIDTH]);
     // Moves the tetromino to the right, checks for collisions and boundaries
     void moveRight(float deltaTime, TetrominoData &currentTetromino, int gird[][GRID_WIDTH]);
     // Moves the tetromino downward more quickly from user
-    void moveDown(float deltaTime, TetrominoData &currentTetrominom, int grid[][GRID_WIDTH]);
+    bool moveDown(float deltaTime, TetrominoData &currentTetrominom, int grid[][GRID_WIDTH]);
     // Resets the game state, which clears the grid and respawning tetromino,
     void resetGame(int grid[][GRID_WIDTH], TetrominoData &currentTetromino);
 

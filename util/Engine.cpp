@@ -16,11 +16,16 @@ using namespace std;
 */
 Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SIZE * GRID_HEIGHT * RESIZE), "Tetris") {
     // Load the font
-    if(!font.loadFromFile("C:/Users/Mitchell Steenbergen/CLionProjects/Tetris/Font/Courier Regular.ttf")){
+    if(!font.loadFromFile("C:/Users/gamer/CLionProjects/TryingTetris/Font/Courier Regular.ttf")){
         std::cout << "Error loading font" << endl;
     }
     // Initialize the grid with default values
     Grid();
+    score = 0;
+    scoreText.setFont(font);
+    scoreText.setString("Score:");
+    scoreText.setFillColor(sf::Color::Yellow);
+    scoreText.setCharacterSize(30);
     // Spawn the first tetromino
     Tetro.spawnTetr(currentTetromino);
     if(!canPlace(currentTetromino)){
@@ -170,22 +175,31 @@ void Engine::render(){
  * @param dTa
  */
 void Engine::update(float dT){
+    float vela = 1.0f;
     // Handles the falling movement of the tetromino (add the other movement)
-    Tetro.falling(dT, currentTetromino, grid, gridColor);
+    int steps = Tetro.falling(dT, currentTetromino, grid, gridColor, vela);
+    if (steps > 0) {
+        score += 1;
+        scoreText.setString("Score:" + std::to_string(score));
+    }
     // Check if the current tetromino has stopped falling
     if (!currentTetromino.isFalling) {
         // Print grid state for debugging
         //printGrid();
         // Clear any full rows
         clearRows();
+
         // Spawn a new Tetromino by setting current to next
         currentTetromino = nextTetromino;
         currentTetromino.isFalling = true;
         // Checking if it can place.
         if(!canPlace(currentTetromino)){
+            score = 0;
+            scoreText.setString("Score:");
             currentGameState = GAME_OVER;
             cout << "Game Over" << endl;
         }
+
         // Spawning the upcoming tetromino.
         Tetro.spawnTetr(nextTetromino);
         nextTetromino.isFalling = false;
@@ -222,6 +236,8 @@ void Engine::clearRows() {
             }
         }
         if(isFull){
+            score += 100;
+            scoreText.setString("Score:" + std::to_string(score));
             // Shift rows above downward
             for (int row = y; row > 0; row--){
                 for(int x = 0; x < GRID_WIDTH; x++){
@@ -243,7 +259,7 @@ void Engine::clearRows() {
     }
 }
 /**
- * Prints the current state of the grid to the console
+ * Prints the current state of the grid to the console THIS IS FOR TESTING
  */
 void Engine::printGrid() {
     std::cout << "Current Grid State:" << std::endl;
@@ -267,14 +283,15 @@ void Engine::drawNextPreviewHUD() {
 
     // Preview box
     const float pad = 24.f;
-    const FloatRect previewBox(pad, 56.f, worldW - 2 * pad, worldH - 56.f - pad);
+    const FloatRect previewBox(pad, 56.f, worldW - 1.5f * pad, worldH - 80.f - pad);
 
     RectangleShape box({previewBox.width, previewBox.height});
-    box.setPosition(previewBox.left, previewBox.top);
+    box.setPosition(previewBox.left - 10.f, previewBox.top - 30.f);
     box.setFillColor(sf::Color(28, 28, 56));
     box.setOutlineThickness(1.f);
     box.setOutlineColor(sf::Color(90, 90, 160));
     window.draw(box);
+
 
     // Compute bounding box (in block units) of the next tetromino
     int minX = INT_MAX, maxX = INT_MIN, minY = INT_MAX, maxY = INT_MIN;
@@ -294,8 +311,8 @@ void Engine::drawNextPreviewHUD() {
     const float shapeHpx = hBlocks * blockSize;
 
     // Center the shape inside the preview box
-    const float startX = previewBox.left + (previewBox.width  - shapeWpx) * 0.5f;
-    const float startY = previewBox.top  + (previewBox.height - shapeHpx) * 0.5f;
+    const float startX = (previewBox.left - 10.f) + (previewBox.width  - shapeWpx) * 0.5f;
+    const float startY = (previewBox.top - 30.f)  + (previewBox.height - shapeHpx) * 0.5f;
 
     // Draw the tetromino blocks
     for (const auto& b : nextTetromino.blocks) {
@@ -306,5 +323,8 @@ void Engine::drawNextPreviewHUD() {
         cell.setFillColor(nextTetromino.color);
         window.draw(cell);
     }
+    scoreText.setPosition(350, 550);
+    window.setView(window.getDefaultView());
+    window.draw(scoreText);
 }
 

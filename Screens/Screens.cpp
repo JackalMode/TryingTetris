@@ -106,3 +106,4 @@ void Screens::gamerOverScreen(sf::RenderWindow &window, sf::Font &font) {
     window.draw(gameOver);
     window.display();
 }
+
