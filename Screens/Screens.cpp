@@ -69,7 +69,7 @@ void Screens::pauseScreen(sf::RenderWindow &window, sf::Font &font) {
     // Set up the pause text
     Text pauseText;
     pauseText.setFont(font);
-    pauseText.setString("Game Paused\nPress 'P' to Resume\nPress 'Escape' to Exit");
+    pauseText.setString("Game Paused\nPress 'P' to Resume\nPress 'R' to Restart\nPress 'Escape' to Exit");
     pauseText.setCharacterSize(20);
     pauseText.setFillColor(Color::Yellow);
 

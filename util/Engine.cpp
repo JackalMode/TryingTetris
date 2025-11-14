@@ -11,7 +11,7 @@ GameState currentGameState = START;
 using namespace sf;
 using namespace std;
 
-/*
+/**
  * Constructs the Engine object and initializes the game window
 */
 Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SIZE * GRID_HEIGHT * RESIZE), "Tetris") {
@@ -22,16 +22,23 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
     // Initialize the grid with default values
     Grid();
     score = 0;
+    line = 0;
+    // Initializing the Score Text DO MOVE THIS LATER
     scoreText.setFont(font);
     scoreText.setString("Score:");
     scoreText.setFillColor(sf::Color::Yellow);
     scoreText.setCharacterSize(30);
-    // Spawn the first tetromino
+    // WE ARE GOING TO MOVE THIS TOO
+    // GET THE LINE WORKING
+    lineText.setFont(font);
+    lineText.setString("Lines:");
+    lineText.setCharacterSize(30);
+    lineText.setFillColor(Color::Yellow);
+    // Spawn the first Tetromino
     Tetro.spawnTetr(currentTetromino);
-    if(!canPlace(currentTetromino)){
-        currentGameState = GAME_OVER;
-    }
+    // Spawns the next Tetromino that will fall
     Tetro.spawnTetr(nextTetromino);
+    // Set it to false, so it doesn't fall as it is the upcoming one
     nextTetromino.isFalling = false;
 
     const auto worldW = static_cast<float>(TILE_SIZE * GRID_WIDTH);
@@ -48,7 +55,7 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
     gameClock.restart();
 }
 
-/*
+/**
  * Initialize the grid with default values
  */
 void Engine::Grid(){
@@ -61,7 +68,7 @@ void Engine::Grid(){
         }
     }
 }
-/*
+/**
  * Runs the main game loop
  */
 void Engine::run(){
@@ -93,6 +100,11 @@ void Engine::run(){
                     currentGameState = PLAY;
                 } else if (event.key.code == Keyboard::Escape) {
                     window.close();
+                } else if (event.key.code == Keyboard::R) {
+                    Tetro.resetGame(grid, currentTetromino);
+                    score = 0;
+                    scoreText.setString("Score:");
+                    currentGameState = PLAY;
                 }
             } else if (currentGameState == GAME_OVER){
                 if(event.type == Event::KeyPressed){
@@ -185,7 +197,7 @@ void Engine::update(float dT){
     // Check if the current tetromino has stopped falling
     if (!currentTetromino.isFalling) {
         // Print grid state for debugging
-        //printGrid();
+        printGrid();
         // Clear any full rows
         clearRows();
 
@@ -205,9 +217,8 @@ void Engine::update(float dT){
         nextTetromino.isFalling = false;
 
     }
-
 }
-/*
+/**
  * Checks if you are able to put the blocks down
  */
 bool Engine::canPlace(const TetrominoData &tetro) const {
@@ -221,7 +232,7 @@ bool Engine::canPlace(const TetrominoData &tetro) const {
     }
     return true;
 }
-/*
+/**
  * Clears any full rows from the gird and shifts rows above down
  */
 void Engine::clearRows() {
@@ -238,6 +249,8 @@ void Engine::clearRows() {
         if(isFull){
             score += 100;
             scoreText.setString("Score:" + std::to_string(score));
+            line += 1;
+            lineText.setString("Lines:" + std::to_string(line));
             // Shift rows above downward
             for (int row = y; row > 0; row--){
                 for(int x = 0; x < GRID_WIDTH; x++){
@@ -269,14 +282,24 @@ void Engine::printGrid() {
             std::cout << grid[y][x] << " ";
         }
         std::cout << std::endl;
+
+        std::cout << line << std::endl;
     }
 }
 /**
- * Draws the next tetromino in a HUD that will be spawing in
+ * Draws the next tetromino in a HUD that will be spawning in
  */
 void Engine::drawNextPreviewHUD() {
     // Switch to HUD view (right side)
     window.setView(hudView);
+
+    // Setting the text of for Next
+    // DO MOVE THIS AS WELL WHEREVER YOU MOVE THE SCORE TEXT
+    Text next;
+    next.setFont(font);
+    next.setString("Next:");
+    next.setCharacterSize(30);
+    next.setFillColor(Color::Yellow);
 
     const auto worldW = static_cast<float>(TILE_SIZE * GRID_WIDTH);
     const auto worldH = static_cast<float>(TILE_SIZE * GRID_HEIGHT);
@@ -317,14 +340,18 @@ void Engine::drawNextPreviewHUD() {
     // Draw the tetromino blocks
     for (const auto& b : nextTetromino.blocks) {
         sf::RectangleShape cell({blockSize - 1.f, blockSize - 1.f});
-        float localX = static_cast<float>(b.x - minX);
-        float localY = static_cast<float>(b.y - minY);
+        auto localX = static_cast<float>(b.x - minX);
+        auto localY = static_cast<float>(b.y - minY);
         cell.setPosition(startX + localX * blockSize, startY + localY * blockSize);
         cell.setFillColor(nextTetromino.color);
         window.draw(cell);
     }
-    scoreText.setPosition(350, 550);
+    scoreText.setPosition(375, worldH + 170);
+    lineText.setPosition(375, worldH + 200);
+    next.setPosition(375, worldH - 100);
     window.setView(window.getDefaultView());
     window.draw(scoreText);
+    window.draw(next);
+    window.draw(lineText);
 }
 

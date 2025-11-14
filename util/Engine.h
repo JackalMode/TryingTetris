@@ -59,6 +59,10 @@ private:
     int score;
     // Score Text
     Text scoreText;
+    // Line text
+    Text lineText;
+    // Line clear number
+    int line;
 };
 
 
