@@ -32,7 +32,7 @@ private:
     // Game window to display the game
     RenderWindow window;
     // The game grid representing the current state of the blocks
-    int grid[GRID_HEIGHT][GRID_WIDTH];
+    int grid[GRID_HEIGHT][GRID_WIDTH]{};
     // Color representation of each position in the gird
     Color gridColor[GRID_HEIGHT][GRID_WIDTH];
     // Data for the current tetromino being manipulated
@@ -63,6 +63,8 @@ private:
     Text lineText;
     // Line clear number
     int line;
+    // VeloY
+    float vela{};
 };
 
 

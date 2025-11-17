@@ -23,21 +23,26 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
     Grid();
     score = 0;
     line = 0;
+
     // Initializing the Score Text DO MOVE THIS LATER
     scoreText.setFont(font);
     scoreText.setString("Score:");
     scoreText.setFillColor(sf::Color::Yellow);
     scoreText.setCharacterSize(30);
+
     // WE ARE GOING TO MOVE THIS TOO
     // GET THE LINE WORKING
     lineText.setFont(font);
     lineText.setString("Lines:");
     lineText.setCharacterSize(30);
     lineText.setFillColor(Color::Yellow);
+
     // Spawn the first Tetromino
     Tetro.spawnTetr(currentTetromino);
+
     // Spawns the next Tetromino that will fall
     Tetro.spawnTetr(nextTetromino);
+
     // Set it to false, so it doesn't fall as it is the upcoming one
     nextTetromino.isFalling = false;
 
@@ -74,7 +79,7 @@ void Engine::Grid(){
 void Engine::run(){
     Screens screens;
     while (window.isOpen()) {
-        Event event;
+        Event event{};
         // Calculate Delta Time
         float dT = gameClock.restart().asSeconds();
         // Poll for events such as closing the window or pressing keys
@@ -102,7 +107,11 @@ void Engine::run(){
                     window.close();
                 } else if (event.key.code == Keyboard::R) {
                     Tetro.resetGame(grid, currentTetromino);
+                    // Clearing the line and line text
+                    // Clearing the score and score text as well
                     score = 0;
+                    line = 0;
+                    lineText.setString("Lines:");
                     scoreText.setString("Score:");
                     currentGameState = PLAY;
                 }
@@ -112,9 +121,15 @@ void Engine::run(){
                         window.close();
                     } else if (event.key.code == Keyboard::R){
                         Tetro.resetGame(grid, currentTetromino);
+                        // Clearing the line and line text
+                        line = 0;
+                        lineText.setString("Lines:");
                         currentGameState = PLAY;
                     } else if (event.key.code == Keyboard::M){
                         Tetro.resetGame(grid, currentTetromino);
+                        // Clearing the line and line text
+                        line = 0;
+                        lineText.setString("Lines:");
                         currentGameState = START;
                     }
                 }
@@ -164,6 +179,35 @@ void Engine::render(){
         }
     }
 
+    // ADD GHOST LOGIC
+    if (currentTetromino.isFalling && !currentTetromino.blocks.empty()){
+        int drop = INT_MAX;
+
+        for(const auto& block : currentTetromino.blocks){
+            int localDrop = 0;
+            while (true) {
+                int newY = block.y + localDrop + 1;
+                if(newY >= GRID_HEIGHT || grid[newY][block.x] != 0){
+                    break;
+                }
+                localDrop++;
+            }
+            drop = std::min(drop, localDrop);
+        }
+        if(drop > 0 && drop != INT_MAX){
+            // Matching the ghost Tetro with the current one and making it transparent
+            Color ghostColor = currentTetromino.color;
+            ghostColor.a = 80;
+
+            for(const auto& block : currentTetromino.blocks){
+                RectangleShape ghostCell(Vector2f(TILE_SIZE - 1, TILE_SIZE - 1));
+                ghostCell.setPosition(block.x * TILE_SIZE, (block.y + drop) * TILE_SIZE);
+                ghostCell.setFillColor(ghostColor);
+                window.draw(ghostCell);
+            }
+        }
+    }
+
     // Render the current Tetromino blocks
     for(const auto& block : currentTetromino.blocks){
         // Define a tetromino block with adjusted size
@@ -186,8 +230,13 @@ void Engine::render(){
  * Updates the game state
  * @param dTa
  */
-void Engine::update(float dT){
-    float vela = 1.0f;
+void Engine::update(float dT){\
+    // The speed at which the game is played at the start.
+    vela = 1.0f;
+    // Updates the game speed after every 10 lines cleared
+    if(line % 10 == 0){
+        vela = 1.f;
+    }
     // Handles the falling movement of the tetromino (add the other movement)
     int steps = Tetro.falling(dT, currentTetromino, grid, gridColor, vela);
     if (steps > 0) {
@@ -197,7 +246,7 @@ void Engine::update(float dT){
     // Check if the current tetromino has stopped falling
     if (!currentTetromino.isFalling) {
         // Print grid state for debugging
-        printGrid();
+        //printGrid();
         // Clear any full rows
         clearRows();
 
@@ -222,7 +271,7 @@ void Engine::update(float dT){
  * Checks if you are able to put the blocks down
  */
 bool Engine::canPlace(const TetrominoData &tetro) const {
-    for (const auto& blo : tetro.blocks) {
+    for(const auto& blo : tetro.blocks) {
         if (blo.y < 0 || blo.y >= GRID_HEIGHT || blo.x < 0 || blo.x >= GRID_WIDTH){
             return false;
         }
@@ -247,8 +296,10 @@ void Engine::clearRows() {
             }
         }
         if(isFull){
+            // Adding 100 for every line cleared
             score += 100;
             scoreText.setString("Score:" + std::to_string(score));
+            // Keeping track of how many lines cleared
             line += 1;
             lineText.setString("Lines:" + std::to_string(line));
             // Shift rows above downward
@@ -294,7 +345,7 @@ void Engine::drawNextPreviewHUD() {
     window.setView(hudView);
 
     // Setting the text of for Next
-    // DO MOVE THIS AS WELL WHEREVER YOU MOVE THE SCORE TEXT
+    // DO MOVE THIS AS WELL WHEREVER YOU MOVE THE SCORE TEXT (IF YOU DO)
     Text next;
     next.setFont(font);
     next.setString("Next:");

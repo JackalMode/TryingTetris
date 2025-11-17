@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="M4OEP"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\OneDrive\;CMake Files\..\..\OneDrive\Documents\;CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\;CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\lib\;CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\lib\cmake\;CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\lib\cmake\SFML\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="M4OEP">
+				<Option output="C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/M4OEP.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/gamer/OneDrive/Documents/SFML-2.6.2/include"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 M4OEP"/>
+					<CompileFile command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="M4OEP/fast">
+				<Option output="C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/M4OEP.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/gamer/OneDrive/Documents/SFML-2.6.2/include"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"/>
+					<Add directory="C:/Users/gamer/AppData/Local/JetBrains/CLion 2023.3.2/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 M4OEP/fast"/>
+					<CompileFile command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/gamer/AppData/Local/JETBRA~1/CLION2~1.2/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/gamer/CLionProjects/TryingTetris/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/Screens/Screens.cpp">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/Screens/Screens.h">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/rotation/Rotation.cpp">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/rotation/Rotation.h">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/tetromino/Tetromino.cpp">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/tetromino/Tetromino.h">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/util/Constants.h">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/util/Engine.cpp">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/util/Engine.h">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/util/main.cpp">
+			<Option target="M4OEP"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/../../OneDrive/Documents/SFML-2.6.2/lib/cmake/SFML/SFMLConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/../../OneDrive/Documents/SFML-2.6.2/lib/cmake/SFML/SFMLConfigDependencies.cmake">
+			<Option virtualFolder="CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/../../OneDrive/Documents/SFML-2.6.2/lib/cmake/SFML/SFMLConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/../../OneDrive/Documents/SFML-2.6.2/lib/cmake/SFML/SFMLSharedTargets-debug.cmake">
+			<Option virtualFolder="CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/../../OneDrive/Documents/SFML-2.6.2/lib/cmake/SFML/SFMLSharedTargets-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\lib\cmake\SFML\"/>
+		</Unit>
+		<Unit filename="C:/Users/gamer/CLionProjects/TryingTetris/../../OneDrive/Documents/SFML-2.6.2/lib/cmake/SFML/SFMLSharedTargets.cmake">
+			<Option virtualFolder="CMake Files\..\..\OneDrive\Documents\SFML-2.6.2\lib\cmake\SFML\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

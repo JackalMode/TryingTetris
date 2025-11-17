@@ -52,7 +52,7 @@ void Tetromino::spawnTetr(TetrominoData &currentTetromino) {
         case 5:
             //J-shape
             currentTetromino.blocks = {{4, 0}, {4, 1}, {4, 2}, {3, 2}};
-            currentTetromino.color = Color(0, 36, 255);
+            currentTetromino.color = Color(157, 144, 255);
             currentTetromino.type = J_SHAPE;
             break;
         case 6:
