@@ -35,6 +35,8 @@ private:
     void loadHighScores();
     // Save the high scores to a txt file
     void saveHighScores();
+    // Clear score and line
+    void clearScoreLine();
     // Font
     Font font;
     // Game clock for tracking time between updates.

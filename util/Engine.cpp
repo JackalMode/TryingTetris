@@ -19,7 +19,7 @@ using namespace std;
 */
 Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SIZE * GRID_HEIGHT * RESIZE), "Tetris") {
     // Load the font
-    if(!font.loadFromFile("C:/Users/Mitchell Steenbergen/CLionProjects/Tetris/Font/Courier Regular.ttf")){
+    if(!font.loadFromFile("C:/Users/Mitchell Steenbergen/CLionProjects/Tetris/Font/JetBrainsMonoNL-Regular.ttf")){
         std::cout << "Error loading font" << endl;
     }
     // Initialize the grid with default values
@@ -65,8 +65,8 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
 void Engine::initHudLabel(sf::Text &text, const std::string &label) {
      text.setFont(font);
      text.setString(label);
-     text.setFillColor(Color::Yellow);
-     text.setCharacterSize(30);
+     text.setFillColor(Color(230, 230, 230));
+     text.setCharacterSize(20);
 }
 
 /**
@@ -170,10 +170,7 @@ void Engine::run(){
                     Tetro.resetGame(grid, currentTetromino);
                     // Clearing the line and line text
                     // Clearing the score and score text as well
-                    score = 0;
-                    line = 0;
-                    lineText.setString("Lines:");
-                    scoreText.setString("Score:");
+                    clearScoreLine();
                     currentGameState = PLAY;
                 }
             } else if (currentGameState == GAME_OVER){
@@ -183,18 +180,12 @@ void Engine::run(){
                     } else if (event.key.code == Keyboard::R){
                         Tetro.resetGame(grid, currentTetromino);
                         // Clearing the line and line text
-                        line = 0;
-                        lineText.setString("Lines:");
-                        score = 0;
-                        scoreText.setString("Score:");
+                        clearScoreLine();
                         currentGameState = PLAY;
                     } else if (event.key.code == Keyboard::M){
                         Tetro.resetGame(grid, currentTetromino);
                         // Clearing the line and line text
-                        line = 0;
-                        lineText.setString("Lines:");
-                        score = 0;
-                        scoreText.setString("Score:");
+                        clearScoreLine();
                         currentGameState = START;
                     }
                 }
@@ -220,7 +211,7 @@ void Engine::run(){
         }
 
         // Add a slight delay to control the game speed
-        sleep(sf::milliseconds(10));
+        sleep(sf::milliseconds(1));
     }
 }
 /**
@@ -461,4 +452,14 @@ void Engine::drawNextPreviewHUD() {
     window.draw(scoreText);
     window.draw(nextLabel);
     window.draw(lineText);
+}
+
+/**
+* Clears the Score and Line numbers
+*/
+void Engine::clearScoreLine() {
+    line = 0;
+    lineText.setString("Lines:");
+    score = 0;
+    scoreText.setString("Score:");
 }
