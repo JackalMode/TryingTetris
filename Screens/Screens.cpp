@@ -11,7 +11,7 @@ using namespace sf;
  * @param window
  * @param font
  */
-void Screens::startScreen(sf::RenderWindow &window, sf::Font &font) {
+void Screens::startScreen(sf::RenderWindow &window, sf::Font &font, const std::array<int, 4>& highScores) {
     // Clear the window with a black background
     window.clear(Color::Black);
 
@@ -50,6 +50,21 @@ void Screens::startScreen(sf::RenderWindow &window, sf::Font &font) {
     FloatRect controlBound = control.getLocalBounds();
     control.setPosition((window.getSize().x - controlBound.width) / 2, (window.getSize().y / 2) + 10);
 
+    // Setting up the HighScore Board in the Start Menu
+    std::string highScoreLines = "High Scores:\n";
+    for(size_t i = 0; i < highScores.size(); i++){
+        highScoreLines += std::to_string(i + 1) + ". " + std::to_string(highScores[i]) + "\n";
+    }
+
+    Text highScoreText;
+    highScoreText.setFont(font);
+    highScoreText.setString(highScoreLines);
+    highScoreText.setCharacterSize(18);
+    highScoreText.setFillColor(Color::Yellow);
+
+    FloatRect highScoreBounds = highScoreText.getLocalBounds();
+    highScoreText.setPosition((window.getSize().x - highScoreBounds.width) / 2, (window.getSize().y / 2) + 90);
+
     // Set the view to the default view for proper alignment
     window.setView(window.getDefaultView());
 
@@ -57,6 +72,7 @@ void Screens::startScreen(sf::RenderWindow &window, sf::Font &font) {
     window.draw(title);
     window.draw(start);
     window.draw(control);
+    window.draw(highScoreText);
     window.display();
 }
 
@@ -89,21 +105,48 @@ void Screens::pauseScreen(sf::RenderWindow &window, sf::Font &font) {
  * @param window
  * @param font
  */
-void Screens::gamerOverScreen(sf::RenderWindow &window, sf::Font &font) {
+void Screens::gamerOverScreen(sf::RenderWindow &window, sf::Font &font, const std::array<int, 4>& highScores) {
+    Text title;
+    title.setFont(font);
+    title.setString("GAME OVER");
+    title.setCharacterSize(48);
+    title.setFillColor(Color::Yellow);
+    title.setStyle(Text::Bold);
+
+    // Center the title text horizontally and position it at the top
+    FloatRect titleBounds = title.getLocalBounds();
+    title.setPosition((window.getSize().x - titleBounds.width) / 2, (window.getSize().y / 2) - 150);
     // Set up the game over text
     Text gameOver;
     gameOver.setFont(font);
-    gameOver.setString("Game Over\nPress 'R' to Restart\nPress 'M' to go to Menu\n 'Esc' to Exit");
+    gameOver.setString("Press 'R' to Restart\nPress 'M' to go to Menu\n 'Esc' to Exit");
     gameOver.setCharacterSize(20);
     gameOver.setFillColor(Color::Yellow);
     // Set position to center the game over text in the window
     FloatRect gameBounds = gameOver.getLocalBounds();
     gameOver.setPosition((window.getSize().x - gameBounds.width) / 2, (window.getSize().y / 2) - 70);
 
+    // Setting up the HighScore Board in the Start Menu
+    std::string highScoreLines = "High Scores:\n";
+    for(size_t i = 0; i < highScores.size(); i++){
+        highScoreLines += std::to_string(i + 1) + ". " + std::to_string(highScores[i]) + "\n";
+    }
+
+    Text highScoreText;
+    highScoreText.setFont(font);
+    highScoreText.setString(highScoreLines);
+    highScoreText.setCharacterSize(18);
+    highScoreText.setFillColor(Color::Yellow);
+
+    FloatRect highScoreBounds = highScoreText.getLocalBounds();
+    highScoreText.setPosition((window.getSize().x - highScoreBounds.width) / 2, (window.getSize().y / 2) + 30);
+
     // Set the view to the default view for proper alignment
     window.setView(window.getDefaultView());
     // Draw the game over screen elements
     window.draw(gameOver);
+    window.draw(highScoreText);
+    window.draw(title);
     window.display();
 }
 

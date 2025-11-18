@@ -4,6 +4,9 @@
 #include "../Screens/Screens.h"
 #include <iostream>
 #include <climits>
+#include <algorithm>
+#include <fstream>
+#include<functional>
 
 enum GameState { START, PLAY, PAUSE, GAME_OVER};
 GameState currentGameState = START;
@@ -16,7 +19,7 @@ using namespace std;
 */
 Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SIZE * GRID_HEIGHT * RESIZE), "Tetris") {
     // Load the font
-    if(!font.loadFromFile("C:/Users/gamer/CLionProjects/TryingTetris/Font/Courier Regular.ttf")){
+    if(!font.loadFromFile("C:/Users/Mitchell Steenbergen/CLionProjects/Tetris/Font/Courier Regular.ttf")){
         std::cout << "Error loading font" << endl;
     }
     // Initialize the grid with default values
@@ -24,18 +27,14 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
     score = 0;
     line = 0;
 
-    // Initializing the Score Text DO MOVE THIS LATER
-    scoreText.setFont(font);
-    scoreText.setString("Score:");
-    scoreText.setFillColor(sf::Color::Yellow);
-    scoreText.setCharacterSize(30);
-
-    // WE ARE GOING TO MOVE THIS TOO
-    // GET THE LINE WORKING
-    lineText.setFont(font);
-    lineText.setString("Lines:");
-    lineText.setCharacterSize(30);
-    lineText.setFillColor(Color::Yellow);
+    highScores.fill(0);
+    loadHighScores();
+    // Initializing the Score Text
+    initHudLabel(scoreText, "Score:");
+    // Initializing the Score Text
+    initHudLabel(lineText, "Lines:");
+    // Initializing the Next text
+    initHudLabel(nextLabel, "Next:");
 
     // Spawn the first Tetromino
     Tetro.spawnTetr(currentTetromino);
@@ -61,6 +60,51 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
 }
 
 /**
+ * Initialize the HUD text
+*/
+void Engine::initHudLabel(sf::Text &text, const std::string &label) {
+     text.setFont(font);
+     text.setString(label);
+     text.setFillColor(Color::Yellow);
+     text.setCharacterSize(30);
+}
+
+/**
+  * Loading the scores from the txt file
+*/
+void Engine::loadHighScores() {
+    std::ifstream inFile("highscores.txt");
+    if(!inFile.is_open()){
+        highScores.fill(0);
+        return;
+    }
+    for(int i = 0; i < 4 && inFile; i++){
+        inFile >> highScores[i];
+        if(!inFile){
+            highScores[i] = 0;
+        }
+    }
+    std::sort(highScores.begin(), highScores.end(), std::greater<>());
+}
+
+/**
+ * Saving the scores to a txt file
+ */
+void Engine::saveHighScores() {
+    std::ofstream outFile("highscores.txt", std::ios::trunc);
+    if(!outFile.is_open()){
+        return;
+    }
+    for(size_t i = 0; i < highScores.size(); i++){
+        outFile << highScores[i];
+        if(i + 1 < highScores.size()){
+            outFile << "\n";
+        }
+    }
+}
+
+
+/**
  * Initialize the grid with default values
  */
 void Engine::Grid(){
@@ -73,6 +117,23 @@ void Engine::Grid(){
         }
     }
 }
+/**
+ * Updates the High Scores
+ */
+ void Engine::updateHighScores(int finalScore) {
+     if (finalScore <= 0) {
+         return;
+     }
+     highScores.back() = std::max(highScores.back(), finalScore);
+     for(size_t i = 0; i < highScores.size(); i++){
+         for (size_t j = i + 1; j < highScores.size(); j++){
+             if(highScores[j] > highScores[i]) {
+                 std::swap(highScores[i], highScores[j]);
+             }
+         }
+     }
+     saveHighScores();
+ }
 /**
  * Runs the main game loop
  */
@@ -124,12 +185,16 @@ void Engine::run(){
                         // Clearing the line and line text
                         line = 0;
                         lineText.setString("Lines:");
+                        score = 0;
+                        scoreText.setString("Score:");
                         currentGameState = PLAY;
                     } else if (event.key.code == Keyboard::M){
                         Tetro.resetGame(grid, currentTetromino);
                         // Clearing the line and line text
                         line = 0;
                         lineText.setString("Lines:");
+                        score = 0;
+                        scoreText.setString("Score:");
                         currentGameState = START;
                     }
                 }
@@ -141,7 +206,7 @@ void Engine::run(){
 
         // Render the appropriate screen based on the current game state
         if(currentGameState == START) {
-            screens.startScreen(window, font);
+            screens.startScreen(window, font, highScores);
         } else if (currentGameState == PAUSE){
             screens.pauseScreen(window, font);
         } else if (currentGameState == PLAY){
@@ -151,7 +216,7 @@ void Engine::run(){
             update(dT);
             render();
         } else if (currentGameState == GAME_OVER){
-            screens.gamerOverScreen(window, font);
+            screens.gamerOverScreen(window, font, highScores);
         }
 
         // Add a slight delay to control the game speed
@@ -234,8 +299,9 @@ void Engine::update(float dT){\
     // The speed at which the game is played at the start.
     vela = 1.0f;
     // Updates the game speed after every 10 lines cleared
-    if(line % 10 == 0){
-        vela = 1.f;
+    if(line >= lastSpeedTrigger + 10){
+        vela += 1.f;
+        lastSpeedTrigger = line;
     }
     // Handles the falling movement of the tetromino (add the other movement)
     int steps = Tetro.falling(dT, currentTetromino, grid, gridColor, vela);
@@ -255,8 +321,7 @@ void Engine::update(float dT){\
         currentTetromino.isFalling = true;
         // Checking if it can place.
         if(!canPlace(currentTetromino)){
-            score = 0;
-            scoreText.setString("Score:");
+            updateHighScores(score);
             currentGameState = GAME_OVER;
             cout << "Game Over" << endl;
         }
@@ -344,14 +409,6 @@ void Engine::drawNextPreviewHUD() {
     // Switch to HUD view (right side)
     window.setView(hudView);
 
-    // Setting the text of for Next
-    // DO MOVE THIS AS WELL WHEREVER YOU MOVE THE SCORE TEXT (IF YOU DO)
-    Text next;
-    next.setFont(font);
-    next.setString("Next:");
-    next.setCharacterSize(30);
-    next.setFillColor(Color::Yellow);
-
     const auto worldW = static_cast<float>(TILE_SIZE * GRID_WIDTH);
     const auto worldH = static_cast<float>(TILE_SIZE * GRID_HEIGHT);
 
@@ -399,10 +456,9 @@ void Engine::drawNextPreviewHUD() {
     }
     scoreText.setPosition(375, worldH + 170);
     lineText.setPosition(375, worldH + 200);
-    next.setPosition(375, worldH - 100);
+    nextLabel.setPosition(375, worldH - 100);
     window.setView(window.getDefaultView());
     window.draw(scoreText);
-    window.draw(next);
+    window.draw(nextLabel);
     window.draw(lineText);
 }
-

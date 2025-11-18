@@ -10,6 +10,7 @@
 #include <vector>
 #include "../tetromino/Tetromino.h"
 #include "Constants.h"
+#include <array>
 
 using namespace sf;
 
@@ -26,6 +27,15 @@ public:
     void printGrid();
 
 private:
+    // Initializes HUD text
+    void initHudLabel(Text& text, const std::string& label);
+    // Updating the High Scores
+    void updateHighScores(int finalScore);
+    // Load the high scores from a txt file
+    void loadHighScores();
+    // Save the high scores to a txt file
+    void saveHighScores();
+    // Font
     Font font;
     // Game clock for tracking time between updates.
     Clock gameClock;
@@ -61,10 +71,16 @@ private:
     Text scoreText;
     // Line text
     Text lineText;
+    // Next piece label
+    Text nextLabel;
     // Line clear number
     int line;
     // VeloY
     float vela{};
+    // Last line to go to 10
+    int lastSpeedTrigger = 0;
+    // Top 4 High Scores
+    std::array<int, 4> highScores{};
 };
 
 
