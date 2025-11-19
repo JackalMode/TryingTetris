@@ -19,7 +19,7 @@ using namespace std;
 */
 Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SIZE * GRID_HEIGHT * RESIZE), "Tetris") {
     // Load the font
-    if(!font.loadFromFile("C:/Users/Mitchell Steenbergen/CLionProjects/Tetris/Font/JetBrainsMonoNL-Regular.ttf")){
+    if(!font.loadFromFile("../Font/JetBrainsMonoNL-Regular.ttf")){
         std::cout << "Error loading font" << endl;
     }
     // Initialize the grid with default values
