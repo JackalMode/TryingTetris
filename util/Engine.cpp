@@ -30,11 +30,11 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
     highScores.fill(0);
     loadHighScores();
     // Initializing the Score Text
-    initHudLabel(scoreText, "Score:");
+    initHudLabel(scoreText, "Score:", 20);
     // Initializing the Score Text
-    initHudLabel(lineText, "Lines:");
+    initHudLabel(lineText, "Lines:", 20);
     // Initializing the Next text
-    initHudLabel(nextLabel, "Next:");
+    initHudLabel(nextLabel, "NEXT", 24);
 
     // Spawn the first Tetromino
     Tetro.spawnTetr(currentTetromino);
@@ -62,11 +62,11 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
 /**
  * Initialize the HUD text
 */
-void Engine::initHudLabel(sf::Text &text, const std::string &label) {
+void Engine::initHudLabel(sf::Text &text, const std::string &label, int size) {
      text.setFont(font);
      text.setString(label);
      text.setFillColor(Color(230, 230, 230));
-     text.setCharacterSize(20);
+     text.setCharacterSize(size);
 }
 
 /**
@@ -402,15 +402,28 @@ void Engine::drawNextPreviewHUD() {
 
     const auto worldW = static_cast<float>(TILE_SIZE * GRID_WIDTH);
     const auto worldH = static_cast<float>(TILE_SIZE * GRID_HEIGHT);
+    const float pad = 28.f;
+
+    // Right-side HUD panel background
+    RectangleShape panel({worldW, worldH});
+    panel.setPosition(0.f, 0.f);
+    panel.setFillColor(Color(10, 10, 18));
+    panel.setOutlineThickness(2.f);
+    panel.setOutlineColor(Color(70, 70, 130));
+    window.draw(panel);
+
 
     // Preview box
-    const float pad = 24.f;
-    const FloatRect previewBox(pad, 56.f, worldW - 1.5f * pad, worldH - 80.f - pad);
+    const float previewTop = pad;
+    const float previewH = worldH * 0.32f;
+    const float previewW = worldW - pad * 1.85f;
+
+    const FloatRect previewBox(pad, previewTop, previewW, previewH);
 
     RectangleShape box({previewBox.width, previewBox.height});
-    box.setPosition(previewBox.left - 10.f, previewBox.top - 30.f);
-    box.setFillColor(sf::Color(28, 28, 56));
-    box.setOutlineThickness(1.f);
+    box.setPosition(previewBox.left, previewBox.top);
+    box.setFillColor(sf::Color(18, 18, 36));
+    box.setOutlineThickness(2.f);
     box.setOutlineColor(sf::Color(90, 90, 160));
     window.draw(box);
 
@@ -427,14 +440,14 @@ void Engine::drawNextPreviewHUD() {
     const int hBlocks = (maxY - minY + 1);
 
     // Use the same TILE_SIZE so it matches game scale (looks crisp)
-    const auto blockSize = static_cast<float>(TILE_SIZE);
+    const auto blockSize = static_cast<float>(TILE_SIZE * 0.75f);
 
     const float shapeWpx = wBlocks * blockSize;
     const float shapeHpx = hBlocks * blockSize;
 
     // Center the shape inside the preview box
-    const float startX = (previewBox.left - 10.f) + (previewBox.width  - shapeWpx) * 0.5f;
-    const float startY = (previewBox.top - 30.f)  + (previewBox.height - shapeHpx) * 0.5f;
+    const float startX = previewBox.left + (previewBox.width  - shapeWpx) * 0.5f;
+    const float startY = previewBox.top  + (previewBox.height - shapeHpx) * 0.5f;
 
     // Draw the tetromino blocks
     for (const auto& b : nextTetromino.blocks) {
@@ -445,14 +458,15 @@ void Engine::drawNextPreviewHUD() {
         cell.setFillColor(nextTetromino.color);
         window.draw(cell);
     }
-    scoreText.setPosition(375, worldH + 170);
-    lineText.setPosition(375, worldH + 200);
-    nextLabel.setPosition(375, worldH - 100);
+    scoreText.setPosition(423, worldH + 170);
+    lineText.setPosition(423, worldH + 200);
+    nextLabel.setPosition(423, worldH - 90);
     window.setView(window.getDefaultView());
     window.draw(scoreText);
     window.draw(nextLabel);
     window.draw(lineText);
 }
+
 
 /**
 * Clears the Score and Line numbers

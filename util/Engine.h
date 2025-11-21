@@ -28,7 +28,7 @@ public:
 
 private:
     // Initializes HUD text
-    void initHudLabel(Text& text, const std::string& label);
+    void initHudLabel(Text& text, const std::string& label, int size);
     // Updating the High Scores
     void updateHighScores(int finalScore);
     // Load the high scores from a txt file
