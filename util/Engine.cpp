@@ -443,7 +443,8 @@ void Engine::drawNextPreviewHUD() {
 
     const auto worldW = static_cast<float>(TILE_SIZE * GRID_WIDTH);
     const auto worldH = static_cast<float>(TILE_SIZE * GRID_HEIGHT);
-    const float pad = 28.f;
+    const float pad = 8.f;
+    const float gap = 10.f;
 
     // Right-side HUD panel background
     RectangleShape panel({worldW, worldH});
@@ -453,26 +454,27 @@ void Engine::drawNextPreviewHUD() {
     panel.setOutlineColor(Color(70, 70, 130));
     window.draw(panel);
 
-    // Common width for both boxes
-    const float boxW = worldW - pad * 2.f;
-    const float boxH = worldH * 0.22f; // a bit smaller, so we can stack two
+    // Common size for both boxes (side by side)
+    const float boxW = (worldW - pad * 2.f - gap) * 0.5f;
+    const float boxH = worldH * 0.26f;
+    const float boxTop = pad + 18.f;
 
-    // HOLD box (top)
-    const FloatRect holdBox(pad, pad + 24.f, boxW, boxH);
+    // NEXT box (left)
+    const FloatRect nextBox(pad, boxTop, boxW, boxH);
 
-    RectangleShape holdRect({holdBox.width, holdBox.height});
-    holdRect.setPosition(holdBox.left, holdBox.top);
+    RectangleShape holdRect({nextBox.width, nextBox.height});
+    holdRect.setPosition(nextBox.left, nextBox.top);
     holdRect.setFillColor(sf::Color(18, 18, 36));
     holdRect.setOutlineThickness(2.f);
     holdRect.setOutlineColor(sf::Color(90, 90, 160));
     window.draw(holdRect);
 
 
-    // NEXT box
-    const FloatRect nextBox(pad, holdBox.top + holdBox.height + 24.f, boxW, boxH);
+    // HOLD box (right)
+    const FloatRect holdBox(nextBox.left + boxW + gap, boxTop, boxW, boxH);
 
-    RectangleShape box({nextBox.width, nextBox.height});
-    box.setPosition(nextBox.left, nextBox.top);
+    RectangleShape box({holdBox.width, holdBox.height});
+    box.setPosition(holdBox.left, holdBox.top);
     box.setFillColor(sf::Color(18, 18, 36));
     box.setOutlineThickness(2.f);
     box.setOutlineColor(sf::Color(90, 90, 160));
@@ -521,10 +523,10 @@ void Engine::drawNextPreviewHUD() {
 
     drawPreview(nextTetromino, nextBox);
 
-    scoreText.setPosition(423, worldH + 170);
-    lineText.setPosition(423, worldH + 200);
-    nextLabel.setPosition(423, worldH - 90);
-    holdLabel.setPosition(423, worldH - 70);
+    scoreText.setPosition(350, worldH + 130);
+    lineText.setPosition(350, worldH + 155);
+    nextLabel.setPosition(350, worldH - 100);
+    holdLabel.setPosition(497, worldH - 100);
     window.setView(window.getDefaultView());
     window.draw(scoreText);
     window.draw(nextLabel);
