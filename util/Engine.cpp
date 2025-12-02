@@ -6,7 +6,7 @@
 #include <climits>
 #include <algorithm>
 #include <fstream>
-#include<functional>
+#include <functional>
 
 enum GameState { START, PLAY, PAUSE, GAME_OVER};
 GameState currentGameState = START;
@@ -35,6 +35,8 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
     initHudLabel(lineText, "Lines:", 20);
     // Initializing the Next text
     initHudLabel(nextLabel, "NEXT", 24);
+    // Initializing the Hold text
+    initHudLabel(holdLabel, "HOLD", 24);
 
     // Spawn the first Tetromino
     Tetro.spawnTetr(currentTetromino);
@@ -158,6 +160,8 @@ void Engine::run(){
             } else if (currentGameState == PLAY) {
                 if (event.type == Event::KeyPressed && event.key.code == Keyboard::P) {
                     currentGameState = PAUSE;
+                } else if (event.type == Event::KeyPressed && event.key.code == Keyboard::C) {
+                    doHold();
                 } else if (event.key.code == Keyboard::Escape) {
                     window.close();
                 }
@@ -214,6 +218,41 @@ void Engine::run(){
         sleep(sf::milliseconds(1));
     }
 }
+
+/**
+ * Hold logic, to hold the current piece and or swap
+ */
+void Engine::doHold() {
+    // Only allow hold if we haven't held this round yet
+    if (holdUsed || !currentTetromino.isFalling) {
+        return;
+    }
+
+    if(!hasHold) {
+        // First time holding, moving Current to Hold
+        holdTetromino = currentTetromino;
+        holdTetromino.isFalling = false;
+        hasHold = true;
+
+        // Current becomes Next
+        currentTetromino = nextTetromino;
+        currentTetromino.isFalling = true;
+        Tetro.resetToSpawn(currentTetromino);
+
+        // Spawn Next
+        Tetro.spawnTetr(nextTetromino);
+        nextTetromino.isFalling = false;
+    } else {
+        // Swap current with held
+        std::swap(currentTetromino, holdTetromino);
+        holdTetromino.isFalling = false;
+
+        Tetro.resetToSpawn(currentTetromino);
+        currentTetromino.isFalling = true;
+    }
+    holdUsed = true;
+}
+
 /**
  * Renders the game grid and current tetromino to the game window
  */
@@ -310,6 +349,7 @@ void Engine::update(float dT){\
         // Spawn a new Tetromino by setting current to next
         currentTetromino = nextTetromino;
         currentTetromino.isFalling = true;
+        holdUsed = false;
         // Checking if it can place.
         if(!canPlace(currentTetromino)){
             updateHighScores(score);
@@ -323,6 +363,7 @@ void Engine::update(float dT){\
 
     }
 }
+
 /**
  * Checks if you are able to put the blocks down
  */
@@ -412,61 +453,84 @@ void Engine::drawNextPreviewHUD() {
     panel.setOutlineColor(Color(70, 70, 130));
     window.draw(panel);
 
+    // Common width for both boxes
+    const float boxW = worldW - pad * 2.f;
+    const float boxH = worldH * 0.22f; // a bit smaller, so we can stack two
 
-    // Preview box
-    const float previewTop = pad;
-    const float previewH = worldH * 0.32f;
-    const float previewW = worldW - pad * 1.85f;
+    // HOLD box (top)
+    const FloatRect holdBox(pad, pad + 24.f, boxW, boxH);
 
-    const FloatRect previewBox(pad, previewTop, previewW, previewH);
+    RectangleShape holdRect({holdBox.width, holdBox.height});
+    holdRect.setPosition(holdBox.left, holdBox.top);
+    holdRect.setFillColor(sf::Color(18, 18, 36));
+    holdRect.setOutlineThickness(2.f);
+    holdRect.setOutlineColor(sf::Color(90, 90, 160));
+    window.draw(holdRect);
 
-    RectangleShape box({previewBox.width, previewBox.height});
-    box.setPosition(previewBox.left, previewBox.top);
+
+    // NEXT box
+    const FloatRect nextBox(pad, holdBox.top + holdBox.height + 24.f, boxW, boxH);
+
+    RectangleShape box({nextBox.width, nextBox.height});
+    box.setPosition(nextBox.left, nextBox.top);
     box.setFillColor(sf::Color(18, 18, 36));
     box.setOutlineThickness(2.f);
     box.setOutlineColor(sf::Color(90, 90, 160));
     window.draw(box);
 
 
-    // Compute bounding box (in block units) of the next tetromino
-    int minX = INT_MAX, maxX = INT_MIN, minY = INT_MAX, maxY = INT_MIN;
-    for (const auto& b : nextTetromino.blocks) {
-        minX = std::min(minX, b.x);
-        maxX = std::max(maxX, b.x);
-        minY = std::min(minY, b.y);
-        maxY = std::max(maxY, b.y);
+
+    // Helper lamda to draw a piece in either of the boxes
+    auto drawPreview = [&](const TetrominoData& t, const FloatRect& box) {
+        int minX = INT_MAX, maxX = INT_MIN, minY = INT_MAX, maxY = INT_MIN;
+        for (const auto& b : t.blocks) {
+            minX = std::min(minX, b.x);
+            maxX = std::max(maxX, b.x);
+            minY = std::min(minY, b.y);
+            maxY = std::max(maxY, b.y);
+        }
+        const int wBlocks = (maxX - minX + 1);
+        const int hBlocks = (maxY - minY + 1);
+
+        // Use the same TILE_SIZE so it matches game scale (looks crisp)
+        const auto blockSize = static_cast<float>(TILE_SIZE) * 0.75f;
+
+        const float shapeWpx = wBlocks * blockSize;
+        const float shapeHpx = hBlocks * blockSize;
+
+        // Center the shape inside the box
+        const float startX = box.left + (box.width  - shapeWpx) * 0.5f;
+        const float startY = box.top  + (box.height - shapeHpx) * 0.5f;
+
+        // Draw the tetromino blocks
+        for (const auto& b : t.blocks) {
+            sf::RectangleShape cell({blockSize - 1.f, blockSize - 1.f});
+            auto localX = static_cast<float>(b.x - minX);
+            auto localY = static_cast<float>(b.y - minY);
+            cell.setPosition(startX + localX * blockSize, startY + localY * blockSize);
+            cell.setFillColor(t.color);
+            window.draw(cell);
+        }
+    };
+
+    Tetro.resetToSpawn(holdTetromino);
+
+    if (hasHold) {
+        drawPreview(holdTetromino, holdBox);
     }
-    const int wBlocks = (maxX - minX + 1);
-    const int hBlocks = (maxY - minY + 1);
 
-    // Use the same TILE_SIZE so it matches game scale (looks crisp)
-    const auto blockSize = static_cast<float>(TILE_SIZE * 0.75f);
+    drawPreview(nextTetromino, nextBox);
 
-    const float shapeWpx = wBlocks * blockSize;
-    const float shapeHpx = hBlocks * blockSize;
-
-    // Center the shape inside the preview box
-    const float startX = previewBox.left + (previewBox.width  - shapeWpx) * 0.5f;
-    const float startY = previewBox.top  + (previewBox.height - shapeHpx) * 0.5f;
-
-    // Draw the tetromino blocks
-    for (const auto& b : nextTetromino.blocks) {
-        sf::RectangleShape cell({blockSize - 1.f, blockSize - 1.f});
-        auto localX = static_cast<float>(b.x - minX);
-        auto localY = static_cast<float>(b.y - minY);
-        cell.setPosition(startX + localX * blockSize, startY + localY * blockSize);
-        cell.setFillColor(nextTetromino.color);
-        window.draw(cell);
-    }
     scoreText.setPosition(423, worldH + 170);
     lineText.setPosition(423, worldH + 200);
     nextLabel.setPosition(423, worldH - 90);
+    holdLabel.setPosition(423, worldH - 70);
     window.setView(window.getDefaultView());
     window.draw(scoreText);
     window.draw(nextLabel);
     window.draw(lineText);
+    window.draw(holdLabel);
 }
-
 
 /**
 * Clears the Score and Line numbers
@@ -476,4 +540,7 @@ void Engine::clearScoreLine() {
     lineText.setString("Lines:");
     score = 0;
     scoreText.setString("Score:");
+    hasHold = false;
+    holdUsed = false;
+    holdTetromino.blocks.clear();
 }

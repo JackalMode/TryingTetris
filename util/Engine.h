@@ -37,6 +37,7 @@ private:
     void saveHighScores();
     // Clear score and line
     void clearScoreLine();
+    void doHold();
     // Font
     Font font;
     // Game clock for tracking time between updates.
@@ -47,8 +48,6 @@ private:
     int grid[GRID_HEIGHT][GRID_WIDTH]{};
     // Color representation of each position in the gird
     Color gridColor[GRID_HEIGHT][GRID_WIDTH];
-    // Data for the current tetromino being manipulated
-    TetrominoData currentTetromino;
     // Tetromino object used for managing tetrmonio operations
     Tetromino Tetro;
     // Checks if you can place the Tetromino
@@ -59,22 +58,22 @@ private:
     void update(float deltaTime);
     // Renders the current state of the game
     void render();
-    // Game view
-    View gameView;
-    // Hud View
-    View hudView;
+    // Game and Hud view
+    View gameView, hudView;
     // Upcoming piece (not falling yet)
     TetrominoData nextTetromino;
+    // Data for the current tetromino being manipulated
+    TetrominoData currentTetromino;
+    // Hold Tetromino
+    TetrominoData holdTetromino;
+    bool hasHold = false;
+    bool holdUsed = false;
     // Hud helping hand thingy
     void drawNextPreviewHUD();
     // Score
     int score;
-    // Score Text
-    Text scoreText;
-    // Line text
-    Text lineText;
-    // Next piece label
-    Text nextLabel;
+    // Score, Line, Next, Hold Text
+    Text scoreText, lineText, nextLabel, holdLabel;
     // Line clear number
     int line;
     // VeloY

@@ -41,6 +41,8 @@ public:
     bool moveDown(float deltaTime, TetrominoData &currentTetrominom, int grid[][GRID_WIDTH]);
     // Resets the game state, which clears the grid and respawning tetromino,
     void resetGame(int grid[][GRID_WIDTH], TetrominoData &currentTetromino);
+    // Resets the tetrominos
+    void resetToSpawn(TetrominoData &t);
 
 private:
     // Accumulates time for horizontal movement

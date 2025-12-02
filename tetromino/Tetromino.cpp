@@ -70,6 +70,39 @@ void Tetromino::spawnTetr(TetrominoData &currentTetromino) {
 }
 
 /**
+ * Resets the tetromino
+ * @para Tetro
+ */
+void Tetromino::resetToSpawn(TetrominoData &t) {
+    switch (t.type) {
+        case I_SHAPE:
+            t.blocks = {{4, 0}, {5, 0}, {6, 0}, {7, 0}};
+            break;
+        case O_SHAPE:
+            t.blocks = {{4, 0}, {5, 0}, {4, 1}, {5, 1}};
+            break;
+        case S_SHAPE:
+            t.blocks = {{4, 0}, {5, 0}, {3, 1}, {4, 1}};
+            break;
+        case Z_SHAPE:
+            t.blocks = {{3, 0}, {4, 0}, {4, 1}, {5, 1}};
+            break;
+        case L_SHAPE:
+            t.blocks = {{3, 0}, {3, 1}, {3, 2}, {4, 2}};
+            break;
+        case J_SHAPE:
+            t.blocks = {{4, 0}, {4, 1}, {4, 2}, {3, 2}};
+            break;
+        case T_SHAPE:
+            t.blocks = {{3, 0}, {4, 0}, {5, 0}, {4, 1}};
+            break;
+    }
+
+    // Reset its logical rotation state
+    t.rotationState = 0;
+}
+
+/**
  * Handles the downward/falling movement of a tetromino
  * And if it reaches the bottom or collides, it will place the tetromino on the grid
  * @param dT
