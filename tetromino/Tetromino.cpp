@@ -109,6 +109,7 @@ void Tetromino::resetToSpawn(TetrominoData &t) {
  * @param currentTetromino
  * @param grid
  * @param gridColor
+ * @param velo
  */
 int Tetromino::falling(float dT, TetrominoData &currentTetromino, int grid[][GRID_WIDTH], sf::Color gridColor[][GRID_WIDTH], float velo) {
     if (!currentTetromino.isFalling) {
@@ -248,7 +249,7 @@ void Tetromino::moveRight(float deltaTime, TetrominoData &currentTetromino, int 
     }
 }
 /**
- * Resets the game grid and spaces a new tetromino.
+ * Resets the game grid and places a new tetromino.
  * @param grid
  * @param currentTetromino
  */

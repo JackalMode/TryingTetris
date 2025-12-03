@@ -10,6 +10,7 @@ using namespace sf;
  * Displays the start screen with game title, start prompt, and controls
  * @param window
  * @param font
+ * @param highScores
  */
 void Screens::startScreen(sf::RenderWindow &window, sf::Font &font, const std::array<int, 4>& highScores) {
     // Clear the window
@@ -31,7 +32,7 @@ void Screens::startScreen(sf::RenderWindow &window, sf::Font &font, const std::a
     Text title;
     title.setFont(font);
     title.setString("TETRIS");
-    title.setCharacterSize(56);
+    title.setCharacterSize(80);
     title.setFillColor(Color(255, 230, 120));
     title.setStyle(Text::Bold);
 
@@ -45,7 +46,7 @@ void Screens::startScreen(sf::RenderWindow &window, sf::Font &font, const std::a
     Text start;
     start.setFont(font);
     start.setString("Press 'P' to start");
-    start.setCharacterSize(22);
+    start.setCharacterSize(45);
     start.setFillColor(Color(200, 200, 220));
 
     // Center the start prompt text below the title
@@ -56,7 +57,7 @@ void Screens::startScreen(sf::RenderWindow &window, sf::Font &font, const std::a
     // Set up the control instructions text
     Text control;
     control.setFont(font);
-    control.setCharacterSize(16);
+    control.setCharacterSize(25);
     control.setFillColor(Color(210, 210, 210));
     // arrow keys
     sf::String arrows = sf::String(L"\u2190 \u2191 \u2192");
@@ -86,13 +87,13 @@ void Screens::startScreen(sf::RenderWindow &window, sf::Font &font, const std::a
     Text highScoreText;
     highScoreText.setFont(font);
     highScoreText.setString(highScoreLines);
-    highScoreText.setCharacterSize(18);
+    highScoreText.setCharacterSize(28);
     highScoreText.setFillColor(Color(200, 200, 220));
 
     // Center the high score board
     FloatRect highScoreBounds = highScoreText.getLocalBounds();
     highScoreText.setOrigin(highScoreBounds.left + highScoreBounds.width / 2.f, highScoreBounds.top + highScoreBounds.height / 2.f);
-    highScoreText.setPosition(W * 0.5f, H * 0.7f);
+    highScoreText.setPosition(W * 0.5f, H * 0.68f);
 
     // Set the view to the default view for proper alignment
     window.setView(window.getDefaultView());
@@ -134,7 +135,7 @@ void Screens::pauseScreen(sf::RenderWindow &window, sf::Font &font) {
                         "P   - Resume\n"
                         "R   - Restart\n"
                         "Esc - Exit");
-    pauseText.setCharacterSize(20);
+    pauseText.setCharacterSize(45);
     pauseText.setFillColor(Color(230, 230, 230));
 
     // Set position to center of the smaller window
@@ -149,9 +150,10 @@ void Screens::pauseScreen(sf::RenderWindow &window, sf::Font &font) {
 }
 
 /**
- * Displays the game over scren with options to restart, return to the menu, or exit
+ * Displays the game over scren with options to restart, return to the menu, or exit.
  * @param window
  * @param font
+ * @param highScores
  */
 void Screens::gamerOverScreen(sf::RenderWindow &window, sf::Font &font, const std::array<int, 4>& highScores) {
     window.clear(Color(10, 10, 18));
@@ -171,7 +173,7 @@ void Screens::gamerOverScreen(sf::RenderWindow &window, sf::Font &font, const st
     Text title;
     title.setFont(font);
     title.setString("GAME OVER");
-    title.setCharacterSize(48);
+    title.setCharacterSize(80);
     title.setFillColor(Color(255, 210, 120));
     title.setStyle(Text::Bold);
 
@@ -186,7 +188,7 @@ void Screens::gamerOverScreen(sf::RenderWindow &window, sf::Font &font, const st
     gameOver.setString("R   - Restart\n"
                        "M   - Main Menu\n"
                        "Esc - Exit");
-    gameOver.setCharacterSize(20);
+    gameOver.setCharacterSize(45);
     gameOver.setFillColor(Color(200, 200, 220));
     // Set position to center the game over text in the window
     FloatRect gameBounds = gameOver.getLocalBounds();
@@ -202,12 +204,12 @@ void Screens::gamerOverScreen(sf::RenderWindow &window, sf::Font &font, const st
     Text highScoreText;
     highScoreText.setFont(font);
     highScoreText.setString(highScoreLines);
-    highScoreText.setCharacterSize(18);
+    highScoreText.setCharacterSize(42);
     highScoreText.setFillColor(Color(200, 200, 220));
 
     FloatRect highScoreBounds = highScoreText.getLocalBounds();
     highScoreText.setOrigin(highScoreBounds.left + highScoreBounds.width / 2.f, highScoreBounds.top + highScoreBounds.height / 2.f);
-    highScoreText.setPosition(W * 0.5f, H * 0.60f);
+    highScoreText.setPosition(W * 0.5f, H * 0.62f);
 
     // Draw the game over screen elements
     window.draw(panel);

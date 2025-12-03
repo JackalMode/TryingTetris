@@ -30,13 +30,13 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
     highScores.fill(0);
     loadHighScores();
     // Initializing the Score Text
-    initHudLabel(scoreText, "Score:", 20);
+    initHudLabel(scoreText, "Score:", 45);
     // Initializing the Score Text
-    initHudLabel(lineText, "Lines:", 20);
+    initHudLabel(lineText, "Lines:", 45);
     // Initializing the Next text
-    initHudLabel(nextLabel, "NEXT", 24);
+    initHudLabel(nextLabel, "NEXT", 50);
     // Initializing the Hold text
-    initHudLabel(holdLabel, "HOLD", 24);
+    initHudLabel(holdLabel, "HOLD", 50);
 
     // Spawn the first Tetromino
     Tetro.spawnTetr(currentTetromino);
@@ -57,12 +57,16 @@ Engine::Engine() : window(VideoMode(TILE_SIZE * GRID_WIDTH * RESIZE * 2, TILE_SI
     hudView = window.getDefaultView();
     hudView.setViewport(FloatRect(0.5f, 0.f, 0.5f, 1.f));
     hudView.reset(sf::FloatRect(0.f, 0.f, worldW, worldH));
+
     // Restart the game clock for accurate delta time
     gameClock.restart();
 }
 
 /**
  * Initialize the HUD text
+ * @param text
+ * @param label
+ * @param size
 */
 void Engine::initHudLabel(sf::Text &text, const std::string &label, int size) {
      text.setFont(font);
@@ -121,6 +125,7 @@ void Engine::Grid(){
 }
 /**
  * Updates the High Scores
+ * @param finalScore
  */
  void Engine::updateHighScores(int finalScore) {
      if (finalScore <= 0) {
@@ -274,7 +279,7 @@ void Engine::render(){
         }
     }
 
-    // ADD GHOST LOGIC
+    // Adds the ghost block that shows you where your block will fall
     if (currentTetromino.isFalling && !currentTetromino.blocks.empty()){
         int drop = INT_MAX;
 
@@ -303,6 +308,7 @@ void Engine::render(){
         }
     }
 
+
     // Render the current Tetromino blocks
     for(const auto& block : currentTetromino.blocks){
         // Define a tetromino block with adjusted size
@@ -323,7 +329,7 @@ void Engine::render(){
 }
 /**
  * Updates the game state
- * @param dTa
+ * @param dT
  */
 void Engine::update(float dT){\
     // The speed at which the game is played at the start.
@@ -366,6 +372,7 @@ void Engine::update(float dT){\
 
 /**
  * Checks if you are able to put the blocks down
+ * @param tetro
  */
 bool Engine::canPlace(const TetrominoData &tetro) const {
     for(const auto& blo : tetro.blocks) {
@@ -523,10 +530,10 @@ void Engine::drawNextPreviewHUD() {
 
     drawPreview(nextTetromino, nextBox);
 
-    scoreText.setPosition(350, worldH + 130);
-    lineText.setPosition(350, worldH + 155);
-    nextLabel.setPosition(350, worldH - 100);
-    holdLabel.setPosition(497, worldH - 100);
+    scoreText.setPosition(350 * 2, worldH + 130 * 3.1);
+    lineText.setPosition(350 * 2, worldH + 155 * 3);
+    nextLabel.setPosition(350 * 2, worldH - 25);
+    holdLabel.setPosition(497 * 2, worldH - 25);
     window.setView(window.getDefaultView());
     window.draw(scoreText);
     window.draw(nextLabel);

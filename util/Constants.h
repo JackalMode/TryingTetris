@@ -8,6 +8,6 @@
 const int GRID_WIDTH = 10;
 const int GRID_HEIGHT = 20;
 const int TILE_SIZE = 8;
-const int RESIZE = 4;
+const int RESIZE = 8;
 
 #endif //M4OEP_CONSTANTS_H
