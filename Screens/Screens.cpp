@@ -66,6 +66,7 @@ void Screens::startScreen(sf::RenderWindow &window, sf::Font &font, const std::a
             L" " + arrows + L"          : Move / Rotate\n"
                             L" \u2193              : Soft drop\n"
                             L" P              : Pause / Resume\n"
+                            L" C              : Hold / Swap\n"
                             L" R              : Restart\n"
                             L" Esc            : Quit"
     );
@@ -91,7 +92,7 @@ void Screens::startScreen(sf::RenderWindow &window, sf::Font &font, const std::a
     // Center the high score board
     FloatRect highScoreBounds = highScoreText.getLocalBounds();
     highScoreText.setOrigin(highScoreBounds.left + highScoreBounds.width / 2.f, highScoreBounds.top + highScoreBounds.height / 2.f);
-    highScoreText.setPosition(W * 0.5f, H * 0.68f);
+    highScoreText.setPosition(W * 0.5f, H * 0.7f);
 
     // Set the view to the default view for proper alignment
     window.setView(window.getDefaultView());
